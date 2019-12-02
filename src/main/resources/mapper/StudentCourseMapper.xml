@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cs.hrbnu.DAO.StudentCourseMapper">
+    <resultMap id="studentCourseResultMap" type="edu.cs.hrbnu.model.StudentCourse">
+        <result property="studentId" column="studentId" javaType="String" />
+        <result property="courseId" column="courseId" javaType="String" />
+        <result property="courseTime" column="courseTime" javaType="Integer" />
+        <result property="history" column="history" javaType="Boolean" />
+    </resultMap>
+
+    <!--<select id="getHistoryCourseIdByStudentId" resultMap="studentCourseResultMap">-->
+        <!--select *-->
+        <!--from student_course-->
+        <!--where id=#{id}-->
+    <!--</select>-->
+    <!---->
+     <select id="getStudentIdByCourseId" resultMap="studentCourseResultMap">
+        select studentId
+        from student_course
+        where courseId=#{CourseId}
+    </select>
+
+    <!-- 删除单条学生课程信息 -->
+    <delete id="deleteSingleStudentCourses" parameterType="java.lang.String">
+        delete from student_course
+        where studentId = #{studentId}
+    </delete>
+    <!-- 根据学号获得所有的课程号 -->
+    <select id="selectCourseIdsByClassmateId" parameterType="java.util.HashMap" resultType="java.lang.String">
+        select courseId
+        from student_course
+        where studentId =#{studentId} and history = #{history}
+    </select>
+    <!-- 插入学生时同时插入课程号 -->
+    <insert id="insertSingleStudentCourses" parameterType="java.util.List">
+        insert into student_course (studentId,courseId,courseTime,history)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.studentId},#{item.courseId},#{item.courseTime},#{item.history})
+        </foreach>
+    </insert>
+    <!-- 根据课程号删除课程信息 -->
+    <delete id="deleteStudentCoursesByCourseId" parameterType="java.lang.String">
+        delete from student_course
+        where courseId = #{courseId}
+    </delete>
+    <!-- 插入信息 -->
+    <insert id="insertStudentCourses" parameterType="java.util.List">
+        insert into student_course (studentId,courseId,courseTime,history)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.studentId},#{item.courseId},#{item.courseTime},#{item.history})
+        </foreach>
+    </insert>
+    <!-- 修改单条学生号 -->
+    <update id="updateSingleStudentId" parameterType="java.util.HashMap">
+        update student_course
+        set studentId = #{studentId}
+        where studentId = #{oldStudentId}
+    </update>
+
+    <select id="getHistoryCourseIdByStudentId" parameterType="String" resultMap="studentCourseResultMap">
+       select * from student_course where student_course.history = 0 and
+       student_course.studentId = #{studentId}
+    </select>
+
+    <select id="getCurrentCourseIdByStudentId" parameterType="String" resultMap="studentCourseResultMap">
+    	select * from student_course where student_course.history = 0 and
+       student_course.studentId = #{studentId}
+    </select>
+
+    <update id="updateCourseTimeByStudentIdAndCourseId" parameterType="StudentCourse">
+    update student_course
+    set courseTime = courseTime + 1
+    where studentId=#{studentId} and courseId=#{courseId}
+    </update>
+    <update id="updateHistoryByStudentIdAndCourseId" parameterType="StudentCourse">
+    update student_course
+    set history = history + 1
+    where studentId=#{studentId} and courseId=#{courseId}
+    </update>
+</mapper>

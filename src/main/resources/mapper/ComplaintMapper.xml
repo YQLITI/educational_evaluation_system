@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cs.hrbnu.DAO.ComplaintMapper">
+    <resultMap id="complaintResultMap" type="edu.cs.hrbnu.model.Complaint">
+        <result property="studentId" column="studentId" javaType="String" />
+        <result property="courseId" column="courseId" javaType="String" />
+        <result property="message" column="message" javaType="String" />
+        <result property="complaintTime" column="complaintTime" javaType="Date" />
+    </resultMap>
+    
+    <insert id="insertComplaintContent" parameterType="Complaint">
+        insert into complaint(studentId, courseId, message, complaintTime)
+        VALUE (#{studentId}, #{courseId}, #{message}, #{complaintTime})
+    </insert>
+
+    <select id="getAllComplaint" resultMap="complaintResultMap">
+        select *
+        from complaint
+    </select>
+
+    <select id="getComplaintByStudentId" parameterType="java.lang.String" resultMap="complaintResultMap">
+        select *
+        from complaint
+        where studentId=#{studentId}
+    </select>
+
+    <select id="getComplaintByCourseId" resultMap="complaintResultMap">
+        select *
+        from complaint
+        where courseId=#{courseId}
+    </select>
+    <!-- 删除单条学生投诉信息 -->
+    <delete id="deleteSingleStudentComplaints" parameterType="java.lang.String">
+        delete from complaint
+        where studentId = #{studentId}
+    </delete>
+    <!-- 根据课程号删除投诉信息 -->
+    <delete id="deleteComplaintsByCourseId" parameterType="java.lang.String">
+        delete from complaint
+        where courseId = #{courseId}
+    </delete>
+    <!-- 修改单条学生号 -->
+    <update id="updateSingleStudentId" parameterType="java.util.HashMap">
+        update complaint
+        set studentId = #{studentId}
+        where studentId = #{oldStudentId}
+    </update>
+</mapper>

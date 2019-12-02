@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.cs.hrbnu.DAO.CourseMapper">
+    <resultMap id="courseResultMap" type="edu.cs.hrbnu.model.Course">
+        <result property="courseId" column="courseId" javaType="String" />
+        <result property="courseName" column="courseName" javaType="String" />
+        <result property="teacherId" column="teacherId" javaType="String" />
+        <result property="semester" column="semester" javaType="Integer" />
+        <result property="score" column="score" javaType="Double" />
+        <result property="classification" column="classification" javaType="String" />
+        <result property="courseClass" column="courseClass" javaType="String" />
+        <result property="startTime" column="startTime" javaType="String" />
+        <result property="endTime" column="endTime" javaType="String" />
+        <result property="learnTime" column="learnTime" javaType="Integer" />
+    </resultMap>
+
+    <select id="getCourseById" resultMap="courseResultMap">
+        select *
+        from course
+        where courseId=#{id}
+    </select>
+    <select id="getCurrentMyselfEvaluate" resultMap="courseResultMap">
+        select * from course where teacherId = #{teacherId}
+    </select>
+    <select id="getAllCourses" resultMap="courseResultMap">
+    	select *
+    	from course
+    </select>
+
+    <update id="updateCourseScoreByCourseId">
+    	update course set
+    	score = #{score}
+    	where courseId = #{courseId}
+    </update>
+
+    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id">
+        insert ignore course (courseId,courseName,teacherId,semester,classification,courseClass,startTime,endTime,learnTime)
+        values (#{courseId},#{courseName},#{teacherId},#{semester},#{classification},#{courseClass},#{startTime},#{endTime},#{learnTime})
+    </insert>
+
+    <select id="getCourseByTeacherId" resultMap="courseResultMap">
+    	select *
+    	from course
+    	where teacherId=#{id}
+    </select>
+
+    <!-- 根据教师号获取所有课程号 -->
+    <select id="selectCourseIdsByTeacherId" parameterType="java.lang.String" resultType="java.lang.String">
+        select courseId
+        from course
+        where teacherId =#{teacherId}
+    </select>
+    <!-- 根据教师号删除课程信息 -->
+    <delete id="deleteCoursesByTeacherId" parameterType="java.lang.String">
+        delete from course
+        where teacherId = #{teacherId}
+    </delete>
+    <!-- 修改教师工号 -->
+    <update id="updateTeacherId" parameterType="java.lang.String">
+        update course
+        set teacherId = #{oldTeacherId}
+        where teacherId = #{oldTeacherId}
+    </update>
+    <!-- 插入单条课程信息 -->
+    <insert id="insertSingleCourse" parameterType="Course">
+        insert into course
+        values (#{courseId},#{courseName},#{teacherId},#{semester},#{score},#{classification},
+                #{courseClass},#{startTime},#{endTime},#{learnTime})
+    </insert>
+
+</mapper>
