@@ -8,7 +8,11 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% String appPath = request.getContextPath(); %>
+
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <html>
 <head>
     <title>消息提示</title>
@@ -38,7 +42,7 @@
 <%
     //转向语句
 
-    response.setHeader("Refresh", "3;URL=" + request.getAttribute("url"));
+    response.setHeader("Refresh", "3;URL=" + basePath + request.getAttribute("url"));
 %>
 </body>
 </html>

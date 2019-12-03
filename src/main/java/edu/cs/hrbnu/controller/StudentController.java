@@ -55,18 +55,18 @@ public class StudentController {
                     studentService.updateHistoryByStudentIdAndCourseId(studentId, courseId);
                     model.addAttribute("message", "评价历史课程成功");
                     model.addAttribute("url", "/student/getHistoryCourse");
-                    return new ModelAndView("showMessage");
+                    return new ModelAndView("common/showMessage");
                 }else{
                     studentService.updateCourseTimeByStudentIdAndCourseId(studentId, courseId);
                     model.addAttribute("message", "评价当前课程成功");
                     model.addAttribute("url", "/student/getCurrentCourse");
-                    return new ModelAndView("showMessage");
+                    return new ModelAndView("common/showMessage");
                 }
             }
         }
         model.addAttribute("message", "失败成功");
         model.addAttribute("url", "/student/getCurrentCourse");
-        return new ModelAndView("showMessage");
+        return new ModelAndView("common/showMessage");
     }
 
     /*学生的投诉
@@ -91,11 +91,11 @@ public class StudentController {
         if (studentService.complaint(studentId, courseId, complaintContent) == 0) {
             model.addAttribute("message", "投诉成功");
             model.addAttribute("url", "/student/getCurrentCourseToComplain");
-            return new ModelAndView("showMessage");
+            return new ModelAndView("common/showMessage");
         }else {
             model.addAttribute("message", "投诉成功");
             model.addAttribute("url", "/student/getCurrentCourseToComplain");
-            return new ModelAndView("showMessage");
+            return new ModelAndView("common/showMessage");
         }
 
     }
